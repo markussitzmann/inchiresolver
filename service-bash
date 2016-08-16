@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source ./service.env
+
+echo $SERVICE_NAME
+
+docker-compose exec django_service bash

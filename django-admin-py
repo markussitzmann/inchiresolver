@@ -1,0 +1,9 @@
+#!/bin/bash
+source ./service.env
+
+echo "Running $@"
+
+docker-compose run django_service bash -ci "\
+	cd /home/service/apps && \
+	django-admin.py $* &&\
+	chown -R `stat -c %g .`.`stat -c %u .` ."

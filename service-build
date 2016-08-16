@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+source ./service.env
+
+docker-compose build && \
+echo "Waiting for start up and performing django initialization ..." && \
+sleep 5 && \
+docker-compose run --rm django_service bash -ci "\
+	if [ -d /tmp/project_template/ ]; then cp -r /tmp/project_template/* /home/service && \
+	    cp -r /tmp/uwsgi /home/service && \
+	    cp /tmp/Dockerfile /home/service && \
+	    cp /tmp/requirements.txt /home/service && \
+	    cp /tmp/service.env /home/service && \
+	    cp /tmp/service-* /home/service && \
+	    cp /tmp/django-* /home/service && \
+	    cp /tmp/docker-compose.yml /home/service && \
+	    cp /tmp/run.sh /home/service && \
+	    cp /tmp/supervisord.conf /home/service && \
+	    cp /tmp/nginx.conf /home/service && \
+	    cp /tmp/uwsgi_params /home/service && \
+	    mv /home/service/service-down /home/service/service-down-WARNING-DATA-LOSS; fi && \
+	mkdir -p /home/service/apps/static && \
+	mkdir -p /home/service/apps/media && \
+	chmod 777 /home/service/apps/media; \
+	django-admin.py migrate && \
+	django-admin.py collectstatic --noinput && \
+	cd /home/ && \
+	chown -R `stat -c %g .`.`stat -c %u .` ./service" && \
+echo "Done."
+

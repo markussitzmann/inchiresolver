@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source ./service.env
+
+docker-compose ps

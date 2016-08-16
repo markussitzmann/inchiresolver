@@ -1,0 +1,26 @@
+version: '2'
+services:
+
+   django_service:
+      image: appserver_${SERVICE_NAME}_image
+      build: .
+      container_name: ${SERVICE_NAME}
+      ports:
+       - "80"
+      volumes:
+       - "${SERVICE_HOME}:/home/service"
+      networks:
+       - appserver_net
+      environment:
+       - DJANGO_SETTINGS_MODULE=apps.settings
+       - PYTHONPATH=/home/service:/home/service/apps
+       - VIRTUAL_HOST=${SERVICE_HOSTNAME}
+       - DJANGO_HOSTNAME=${SERVICE_HOSTNAME}
+       - POSTGRES_APPSERVERDB_PASSWORD=${POSTGRES_PASSWORD}
+       - POSTGRES_APPSERVERDB_USER=${POSTGRES_USER}
+       - POSTGRES_APPSERVERDB_HOST=${POSTGRES_HOST}
+
+networks:
+  appserver_net:
+    external:
+      name: bin_net
