@@ -1,0 +1,7 @@
+source ./service.env
+
+docker-compose run --rm django_service bash -ci "\
+	django-admin.py migrate && \
+	django-admin.py collectstatic --noinput"
+	
+echo "Done."
