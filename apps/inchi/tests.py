@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from inchi.identifier import InChI, InChIKey
+from .inchi.identifier import InChI, InChIKey
 from inchi.models import Inchi
 
 

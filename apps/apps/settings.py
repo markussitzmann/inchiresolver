@@ -83,16 +83,16 @@ WSGI_APPLICATION = 'apps.wsgi.application'
 DATABASES = {
     'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-            'NAME': os.environ['POSTGRES_APPSERVERDB_USER'],
-            'USER':  os.environ['POSTGRES_APPSERVERDB_USER'],
+            'NAME': 'appserver',
+            'USER':  'appserver',
             'PASSWORD': os.environ['POSTGRES_APPSERVERDB_PASSWORD'],
             'HOST': os.environ['POSTGRES_APPSERVERDB_HOST'],
             'PORT': 5432
         },
     'appserverdb': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-            'NAME': os.environ['POSTGRES_APPSERVERDB_USER'],
-            'USER':  os.environ['POSTGRES_APPSERVERDB_USER'],
+            'NAME': 'appserver',
+            'USER':  'appserver',
             'PASSWORD': os.environ['POSTGRES_APPSERVERDB_PASSWORD'],
             'HOST': os.environ['POSTGRES_APPSERVERDB_HOST'],
             'PORT': 5432

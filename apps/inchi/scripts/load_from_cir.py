@@ -7,9 +7,9 @@ from inchi.models import Inchi
 
 def fetch_inchi_for(id):
     try:
-        response1 = requests.get('http://cactus.nci.nih.gov/chemical/structure/NCICADD:CID=%s/stdinchikey' % id)
+        response1 = requests.get('https://cactus.nci.nih.gov/chemical/structure/NCICADD:CID=%s/stdinchikey' % id)
         inchikey = InChIKey(response1.content)
-        response2 = requests.get('http://cactus.nci.nih.gov/chemical/structure/NCICADD:CID=%s/stdinchi' % id)
+        response2 = requests.get('https://cactus.nci.nih.gov/chemical/structure/NCICADD:CID=%s/stdinchi' % id)
         inchi = InChI(response2.content)
         return (inchikey, inchi)
     except:
@@ -18,16 +18,16 @@ def fetch_inchi_for(id):
 
 def run():
     for id in xrange(1,10000):
-        print id
+        print(id)
         identifiers = fetch_inchi_for(id)
-        print identifiers
+        print(identifiers)
         if identifiers:
             inchikey, inchistring = identifiers
             try:
                 inchi = Inchi()
                 inchi.add_key_and_string(inchikey, inchistring)
             except IntegrityError as e:
-                print e
-                print "Skipped"
+                print(e)
+                print("Skipped")
                 pass
     
