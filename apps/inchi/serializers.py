@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rest_framework.relations import PrimaryKeyRelatedField
+
 
 from inchi.models import Inchi, Organization, Publisher, EntryPoint
 

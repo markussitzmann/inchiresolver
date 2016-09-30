@@ -14,8 +14,8 @@ class InChI:
             raise InChIError('string is not resolvable')
         [setattr(self, k, v) for k, v in self.element.items()]
 
-    def _validate(self, string, patternString):
-        pattern = re.compile(patternString)
+    def _validate(self, string, pattern_string):
+        pattern = re.compile(pattern_string)
         match = pattern.search(string)
         if match:
             identifier = match.groupdict()
@@ -30,7 +30,7 @@ class InChI:
         return False
 
     def __str__(self):
-        return self.well_formatted
+        return self.element['well_formatted']
 
 
 class InChIKey:
@@ -52,8 +52,8 @@ class InChIKey:
             raise InChIKeyError('InChIKey is not resolvable')
         [setattr(self, k, v) for k, v in self.element.items()]
 
-    def _validate(self, string, patternString):
-        pattern = re.compile(patternString)
+    def _validate(self, string, pattern_string):
+        pattern = re.compile(pattern_string)
         match = pattern.search(string)
         if match:
             identifier = match.groupdict()
@@ -63,16 +63,14 @@ class InChIKey:
             self.element['is_standard'] = self.element['block2'][-2:-1] == 'S'
             self.element['blocks'] = (self.element['block1'], self.element['block2'], self.element['block3'])
             self.element['well_formatted'] = '%s%s-%s-%s' % (
-            self.element['prefix'], self.element['block1'], self.element['block2'], self.element['block3'])
+                self.element['prefix'], self.element['block1'], self.element['block2'], self.element['block3'])
             self.element['well_formatted_no_prefix'] = '%s-%s-%s' % (
-            self.element['block1'], self.element['block2'], self.element['block3'])
-
-            # self.element['html_formatted'] = self.element['well_formatted'].replace('-','-<wbr>')
+                self.element['block1'], self.element['block2'], self.element['block3'])
             return True
         return False
 
     def __str__(self):
-        return self.well_formatted_no_prefix
+        return self.element['well_formatted_no_prefix']
 
 
 class InChIError(Exception):

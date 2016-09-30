@@ -1,5 +1,5 @@
-from django.db.utils import IntegrityError
 import requests
+from django.db.utils import IntegrityError
 
 from inchi.identifier import InChIKey, InChI
 from inchi.models import Inchi
@@ -17,7 +17,7 @@ def fetch_inchi_for(id):
 
 
 def run():
-    for id in xrange(1,10000):
+    for id in range(1,10000):
         print(id)
         identifiers = fetch_inchi_for(id)
         print(identifiers)

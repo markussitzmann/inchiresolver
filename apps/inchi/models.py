@@ -1,12 +1,9 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.utils.datetime_safe import datetime
-from django_extensions.db.fields import RandomCharField
 import uuid
 
-from inchi.identifier import InChI, InChIKey
-
+from inchi.identifier import InChIKey
 
 class Inchi(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -20,31 +17,29 @@ class Inchi(models.Model):
     class Meta:
         unique_together = ('block1', 'block2', 'block3', 'version')
 
-
     def add_key(self, inchikey, *args, **kwargs):
         self.block1, self.block2, self.block3 = inchikey.blocks
-        self.key = inchikey.well_formatted_no_prefix
-        self.version = inchikey.version
+        self.key = inchikey.element['well_formatted_no_prefix']
+        self.version = inchikey.element['version']
         super(Inchi, self).save(*args, **kwargs)
-
 
     def add_string(self, inchi, *args, **kwargs):
-        self.string = inchi.well_formatted
-        self.version = inchi.version
+        self.string = inchi.element['well_formatted']
+        self.version = inchi.element['version']
         super(Inchi, self).save(*args, **kwargs)
-
 
     def add_key_and_string(self, inchikey, inchistring, *args, **kwargs):
         self.block1, self.block2, self.block3 = inchikey.blocks
-        self.key = inchikey.well_formatted_no_prefix
-        self.string = inchistring.well_formatted
-        self.version = inchikey.version
+        self.key = inchikey.element['well_formatted_no_prefix']
+        self.string = inchistring.element['well_formatted']
+        self.version = inchikey.element['version']
         super(Inchi, self).save(*args, **kwargs)
 
 
+    @property
     def __str__(self):
         inchikey = InChIKey(block1=self.block1, block2=self.block2, block3=self.block3)
-        return inchikey.well_formatted_no_prefix
+        return inchikey.element['well_formatted_no_prefix']
 
 
 
