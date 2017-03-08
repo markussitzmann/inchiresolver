@@ -17,7 +17,7 @@ SECRET_KEY = 'rk+=2d(9d87(zg1_!(u!6d)8%6pmwo-l&fet8111^&!f&=*x0q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django.localhost',]
+ALLOWED_HOSTS = ['django.localhost','inchiresolver.localhost']
 
 
 # Application definition
@@ -69,7 +69,6 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.core.context_processors.request',
                 'finalware.context_processors.contextify',
             ],
         },
