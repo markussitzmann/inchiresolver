@@ -39,7 +39,7 @@ a single block in the template.
 }
 
 .navbar {
-  background: #327f55;
+  background: #f5793e;
   color: white;
   border: none;
 }
@@ -105,12 +105,12 @@ ul.breadcrumb {
 .pagination>.active>span:hover, 
 .pagination>.active>a:focus, 
 .pagination>.active>span:focus {
-	background-color: #5cb85c;
-	border-color: #5cb85c;
+	background-color: #f6945d;
+	border-color: #f6945d;
 }
 
 .pagination>li>a {
-	color: green;	
+	color: #f6945d;
 }
 
 
@@ -260,11 +260,11 @@ body a:hover {
 }
 
 .btn-primary {
-	background-color: #5cb85c;
-	border-color: #5cb85c;	
+	background-color: #343335;
+	border-color: #343335;
 }
 
 .btn-primary:hover {
-	background-color: green;
-	border-color: green;	
+	background-color: #f6945d;
+	border-color: #f6945d;
 }

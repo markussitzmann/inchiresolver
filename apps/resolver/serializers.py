@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 
-from inchi.models import Inchi, Organization, Publisher, EntryPoint
+from resolver.models import Inchi, Organization, Publisher, EntryPoint
 
 
 class InchiSerializer(serializers.HyperlinkedModelSerializer):

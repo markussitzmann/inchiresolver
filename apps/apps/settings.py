@@ -17,12 +17,16 @@ SECRET_KEY = 'rk+=2d(9d87(zg1_!(u!6d)8%6pmwo-l&fet8111^&!f&=*x0q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django.localhost','inchiresolver.localhost']
+ALLOWED_HOSTS = ['django.localhost', 'inchiresolver.localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+
+    'resolver',
+    'inchi',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -32,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_extensions',
-    'inchi',
+
     # last application to finalize things
     'finalware',
 ]
@@ -56,8 +60,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR,
-            os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'inchi', 'templates'),
+            os.path.join(BASE_DIR, 'resolver', 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -101,7 +104,6 @@ DATABASES = {
 #DATABASE_ROUTERS = ['apps.dbrouter.AuthRouter',]
 
 # Password validation
-# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -120,7 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -134,7 +135,6 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join("/home/service", "static/")
