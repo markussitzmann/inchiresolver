@@ -15,6 +15,8 @@ class Inchi(models.Model):
     key = models.CharField(max_length=27, db_column='key', blank=True, null=True)
     string = models.CharField(max_length=32768, blank=True, null=True)
 
+
+
     class Meta:
         unique_together = ('block1', 'block2', 'block3', 'version')
 
