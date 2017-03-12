@@ -1,10 +1,10 @@
 .com { color: #93a1a1; }
-.lit { color: #195f91; }
+.lit { color: #0b10d7; }
 .pun, .opn, .clo { color: #93a1a1; }
-.fun { color: #dc322f; }
-.str, .atv { color: #D14; }
-.kwd, .prettyprint .tag { color: #1e347b; }
-.typ, .atn, .dec, .var { color: teal; }
+.fun { color: #343335; }
+.str, .atv { color: #343335; }
+.kwd, .prettyprint .tag { color: #0b10d7; }
+.typ, .atn, .dec, .var { color: #0b10d7; }
 .pln { color: #48484c; }
 
 .prettyprint {
@@ -27,4 +27,10 @@ ol.linenums li {
   color: #bebec5;
   line-height: 20px;
   text-shadow: 0 1px 0 #fff;
+}
+
+/* My stuff */
+
+a .str {
+  color: #10a7d8;
 }

@@ -37,11 +37,11 @@ class Inchi(models.Model):
             inchi = cls(*args, **kwargs)
 
         k = None
-        if 'key' in kwargs:
+        s = None
+        if 'key' in kwargs and kwargs['key']:
             k = InChIKey(kwargs['key'])
-            s = None
 
-        if 'string' in kwargs:
+        if 'string' in kwargs and kwargs['string']:
             s = InChI(kwargs['string'])
             _k = InChIKey(Chem.InchiToInchiKey(kwargs['string']))
             if k:
@@ -65,32 +65,33 @@ class Inchi(models.Model):
 
         return inchi
 
-
-
-
-
-
-
+    def __str__(self):
+        return self.key
 
 
 class Organization(models.Model):
-    uid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    uid = models.UUIDField(primary_key=True, editable=False)
     parent = models.ForeignKey('self', blank=True, null=True)
-    name = models.CharField(unique=True, max_length=32768, blank=True, null=True)
+    name = models.CharField(unique=True, max_length=32768)
     abbreviation = models.CharField(max_length=32, blank=True, null=True)
     url = models.URLField(max_length=4096, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified= models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def create(cls, *args, **kwargs):
+        organization = cls(*args, **kwargs)
+        organization.uid = uuid.uuid5(uuid.NAMESPACE_URL, kwargs.get('name'))
 
     def __str__(self):
         return self.name
 
 
 class Publisher(models.Model):
-    uid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    uid = models.UUIDField(primary_key=True, editable=False)
     parent = models.ForeignKey('self', blank=True, null=True)
     organization = models.ForeignKey('Organization', blank=True, null=True)
-    name = models.CharField(max_length=32768, blank=True, null=True)
+    name = models.CharField(max_length=32768)
     group = models.CharField(max_length=32768, blank=True, null=True)
     contact = models.CharField(max_length=32768, blank=True, null=True)
     url = models.URLField(max_length=4096, blank=True, null=True)
@@ -99,6 +100,17 @@ class Publisher(models.Model):
 
     class Meta:
         unique_together = ('parent', 'organization', 'name', 'group', 'contact')
+
+    @classmethod
+    def create(cls, *args, **kwargs):
+        publisher = cls(*args, **kwargs)
+        publisher.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join(
+            kwargs.get('name'),
+            kwargs.get('organization', None),
+            kwargs.get('parent', None),
+            kwargs.get('group', None),
+            kwargs.get('contact', None),
+        ))
 
     def __str__(self):
         return "%s[%s, %s]" % (self.name, self.group, self.contact)

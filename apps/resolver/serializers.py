@@ -5,10 +5,14 @@ from resolver.models import Inchi, Organization, Publisher, EntryPoint
 
 
 class InchiSerializer(serializers.HyperlinkedModelSerializer):
-    
+
+    _self = serializers.HyperlinkedIdentityField(view_name='inchi-detail', format='html')
+    _uid = serializers.UUIDField(source='uid', read_only=True)
+
     class Meta:
         model = Inchi
-        fields = ('uid', 'key', 'string',)
+        fields = ('_uid', '_self', 'string', 'key', 'version', 'is_standard')
+        read_only_fields = ('version', 'is_standard')
 
     def create(self, validated_data):
         inchi = Inchi.create(**validated_data)
@@ -25,6 +29,10 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
         model = Organization
         fields = ('_self', 'parent', 'name', 'abbreviation', 'url', 'added', 'modified')
 
+    def create(self, validated_data):
+        organization = Organization.create(**validated_data)
+        organization.save()
+        return organization
 
 
 class PublisherSerializer(serializers.HyperlinkedModelSerializer):

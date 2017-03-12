@@ -1,11 +1,17 @@
+from rest_framework import mixins
 from rest_framework import viewsets, permissions
+from rest_framework.viewsets import GenericViewSet
 
 from resolver.models import Inchi, Organization, Publisher, EntryPoint
-from resolver.serializers import InchiSerializer, OrganizationSerializer, \
-    PublisherSerializer, EntryPointSerializer
+from resolver.serializers import InchiSerializer, OrganizationSerializer, PublisherSerializer, EntryPointSerializer
 
 
-class InchiViewSet(viewsets.ModelViewSet):
+class InchiViewSet(
+        mixins.CreateModelMixin,
+        mixins.RetrieveModelMixin,
+        mixins.DestroyModelMixin,
+        mixins.ListModelMixin,
+        GenericViewSet):
     """
     """
     queryset = Inchi.objects.all()

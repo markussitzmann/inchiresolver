@@ -1,3 +1,4 @@
 requests
 django
 django-extensions
+urlnorm

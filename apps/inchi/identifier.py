@@ -51,7 +51,7 @@ class InChIKey:
     PATTERN_STRING_WITH_PREFIX = '(?P<prefix>^%s)(?P<block1>[A-Z]{14})-(?P<block2>[A-Z]{8}(S|N)[A-Z]{1})-(?P<block3>[A-Z]{1}$)' % DEFAULT_PREFIX
 
     def __init__(self, string=None, block1=None, block2=None, block3=None):
-        if string == None and block1 is not False:
+        if string is None and block1 is not False:
             string = block1
             if block2:
                 string += "-%s" % block2

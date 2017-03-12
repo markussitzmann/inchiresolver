@@ -53,12 +53,12 @@ a single block in the template.
 }
 
 .navbar .dropdown-menu li a, .navbar .dropdown-menu li {
-  color: #A30000;
+  color: #343335;
 }
 
 .navbar .dropdown-menu li a:hover {
   background: #EEEEEE;
-  color: #C20000;
+  color: #343335;
 }
 
 .navbar .brand {
@@ -105,12 +105,12 @@ ul.breadcrumb {
 .pagination>.active>span:hover,
 .pagination>.active>a:focus,
 .pagination>.active>span:focus {
-	background-color: #f6945d;
-	border-color: #f6945d;
+	background-color: #6e6c72;
+	border-color: #6e6c72;
 }
 
 .pagination>li>a {
-	color: #f6945d;
+	color: #6e6c72;
 }
 
 
@@ -230,15 +230,15 @@ footer a:hover {
 
 /* custom general page styles */
 .hero-unit h1, .hero-unit h2 {
-  color: #A30000;
+  color: #10a7d8;
 }
 
 body a {
-  color: #A30000;
+  color: #10a7d8;
 }
 
 body a:hover {
-  color: #c20000;
+  color: #10a7d8;
 }
 
 .request-info {
