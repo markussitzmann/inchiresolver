@@ -1,0 +1,38 @@
+#!/bin/bash
+
+### THIS IS AN EXPERIMENTAL SCRIPT ###
+
+source ./service.env
+
+ROOT_DIR=${PWD}
+echo $ROOT_DIR
+
+./service-down
+
+echo "Cleaning up migrations"
+cd apps/resolver/migrations
+rm *.py
+touch __init__.py
+
+#cd $ROOT_DIR
+#cd appservercms/blog/migrations
+#rm *.py
+#touch __init__.py
+
+# !!!! These are a lot of assumptions:
+cd ~/appserver/ && ./appserver-down
+cd ~/appserver/data/ && rm -rf ./appserverdb
+
+sleep 10
+
+cd ~/appserver && ./appserver-up
+
+sleep 10
+
+cd ~/projects/inchiresolver/
+./service-build && ./service-up
+
+./django-admin-py makemigrations resolver inchi
+./django-admin-py migrate
+
+cd ${ROOT_DIR}

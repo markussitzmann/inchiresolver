@@ -1,4 +1,5 @@
 import re
+import uuid
 
 
 class InChI:
@@ -23,14 +24,25 @@ class InChI:
             self.element['prefix'] = InChI.DEFAULT_PREFIX
             self.element['is_standard'] = self.element['version'][-1:] == 'S'
             self.element['version'] = self.element['version'][:1]
-            self.element['well_formatted'] = '%s%s/%s' % (
-            self.element['prefix'], self.element['version'], self.element['layers'])
+            if self.element['is_standard']:
+                self.element['well_formatted'] = '%s%sS/%s' % (
+                self.element['prefix'], self.element['version'], self.element['layers'])
+            else:
+                self.element['well_formatted'] = '%s%s/%s' % (
+                self.element['prefix'], self.element['version'], self.element['layers'])
             # self.element['html_formatted'] = self.element['well_formatted'].replace('-','-<wbr>')
             return True
         return False
 
+    def __eq__(self, other):
+        selfh = self.element['well_formatted']
+        otherh = self.element['well_formatted']
+        return selfh == otherh
+
     def __str__(self):
         return self.element['well_formatted']
+
+
 
 
 class InChIKey:
@@ -68,6 +80,12 @@ class InChIKey:
                 self.element['block1'], self.element['block2'], self.element['block3'])
             return True
         return False
+
+    def __eq__(self, other):
+        selfh = self.element['well_formatted_no_prefix']
+        otherh = self.element['well_formatted_no_prefix']
+        return selfh == otherh
+
 
     def __str__(self):
         return self.element['well_formatted_no_prefix']
