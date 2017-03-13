@@ -13,12 +13,12 @@ from inchi.identifier import InChIKey, InChI
 
 class Inchi(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
-    version = models.IntegerField(db_column='version_id')
-    is_standard = models.BooleanField(db_column='is_standard')
-    block1 = models.CharField(max_length=14, db_column='block1')
-    block2 = models.CharField(max_length=10, db_column='block2')
-    block3 = models.CharField(max_length=1, db_column='block3')
-    key = models.CharField(max_length=27, db_column='key', blank=True, null=True)
+    version = models.IntegerField(blank=True, null=True)
+    is_standard = models.BooleanField(default=False)
+    block1 = models.CharField(max_length=14)
+    block2 = models.CharField(max_length=10)
+    block3 = models.CharField(max_length=1)
+    key = models.CharField(max_length=27, blank=True, null=True)
     string = models.CharField(max_length=32768, blank=True, null=True)
 
 
@@ -82,6 +82,7 @@ class Organization(models.Model):
     def create(cls, *args, **kwargs):
         organization = cls(*args, **kwargs)
         organization.uid = uuid.uuid5(uuid.NAMESPACE_URL, kwargs.get('name'))
+        return organization
 
     def __str__(self):
         return self.name
@@ -96,7 +97,7 @@ class Publisher(models.Model):
     contact = models.CharField(max_length=32768, blank=True, null=True)
     url = models.URLField(max_length=4096, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
-    modified= models.DateTimeField(auto_now=True)
+    modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('parent', 'organization', 'name', 'group', 'contact')
@@ -104,26 +105,64 @@ class Publisher(models.Model):
     @classmethod
     def create(cls, *args, **kwargs):
         publisher = cls(*args, **kwargs)
-        publisher.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join(
+        publisher.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             kwargs.get('name'),
-            kwargs.get('organization', None),
-            kwargs.get('parent', None),
+            str(kwargs.get('organization', None)),
+            str(kwargs.get('parent', None)),
             kwargs.get('group', None),
-            kwargs.get('contact', None),
-        ))
+            kwargs.get('contact', None)
+        ]))
+        return publisher
 
     def __str__(self):
         return "%s[%s, %s]" % (self.name, self.group, self.contact)
 
 
-class EntryPoint(models.Model):
-    uid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class UrlEntryPoint(models.Model):
+    uid = models.UUIDField(primary_key=True, editable=False)
+    parent = models.ForeignKey('self', blank=True, null=True)
     publisher = models.ForeignKey('Publisher')
     url = models.URLField(max_length=4096)
     description = models.TextField(max_length=32768, blank=True, null=True)
+    is_inchi_resolver = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ('publisher', 'url')
+        unique_together = ('parent', 'publisher', 'url', 'is_inchi_resolver')
+
+    @classmethod
+    def create(cls, *args, **kwargs):
+        entrypoint = cls(*args, **kwargs)
+        entrypoint.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
+            str(kwargs.get('parent', None)),
+            str(kwargs.get('publisher')),
+            kwargs.get('url'),
+            str(kwargs.get('is_inchi_resolver', False))
+        ]))
+        return entrypoint
 
     def __str__(self):
         return "%s[%s]" % (self.publisher, self.url)
+
+
+class UriEndPoint(models.Model):
+    uid = models.UUIDField(primary_key=True, editable=False)
+    entrypoint = models.ForeignKey('UrlEntryPoint', blank=True, null=True)
+    uri = models.CharField(max_length=32768)
+    description = models.TextField(max_length=32768, blank=True, null=True)
+    media_type = models.CharField(max_length=1024, blank=True, null=True)
+
+    class Meta:
+        unique_together = ('entrypoint', 'uri')
+
+    @classmethod
+    def create(cls, *args, **kwargs):
+        endpoint = cls(*args, **kwargs)
+        endpoint.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
+            str(kwargs.get('entrypoint')),
+            kwargs.get('uri'),
+            kwargs.get('media_type', None)
+        ]))
+        return endpoint
+
+    def __str__(self):
+        return "%s[%s]" % (self.uri, self.entrypoint)
