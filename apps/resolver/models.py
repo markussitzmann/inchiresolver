@@ -146,7 +146,7 @@ class UrlEntryPoint(models.Model):
 
 class UriEndPoint(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
-    entrypoint = models.ForeignKey('UrlEntryPoint', blank=True, null=True)
+    entrypoint = models.ForeignKey('UrlEntryPoint')
     uri = models.CharField(max_length=32768)
     description = models.TextField(max_length=32768, blank=True, null=True)
     media_type = models.CharField(max_length=1024, blank=True, null=True)

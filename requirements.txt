@@ -1,4 +1,6 @@
 requests
 django
 django-extensions
-urlnorm
+django-rest-swagger
+django-filter
+django-crispy-forms
